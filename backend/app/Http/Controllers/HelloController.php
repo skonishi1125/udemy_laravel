@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Member;
 use Illuminate\Http\Request;
+
 
 class HelloController extends Controller
 {
@@ -16,6 +18,7 @@ class HelloController extends Controller
         'msg' => 'こんにちは、世界!',
         'number' => 100,
         'string' => 'うおお！',
+        'members' => Member::all(),
       ];
       // hello/view.blade.phpを探しにいく
       return view('hello.view',$data);
@@ -25,11 +28,23 @@ class HelloController extends Controller
     public function check(Request $req) {
       $userData = [
         'name' => $req->name,
-        // 'email' => $req->inputEmail,
-        // 'password' => $req->inputPassword,
+        'email' => $req->email,
+        'password' => hash("sha256",$req->password),
       ];
 
       return view('hello/check',$userData);
+
+    }
+
+    public function register(Request $req) {
+      $userData = [
+        'name' => $req->name,
+        'email' => $req->email,
+        // ハッシュ関数を取る
+        'password' => $req->password,
+      ];
+
+      return view('hello/register',$userData);
 
     }
 
