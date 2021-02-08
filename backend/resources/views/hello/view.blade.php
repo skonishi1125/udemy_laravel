@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('title','topページ')
 @section('main')
-
+{{-- 
   <section class="container my-3">
     <div class="row">
       <div class="col-md-6">
@@ -25,6 +25,8 @@
     </div>
   </section>
 
+   --}}
+
   <section class="container my-3 border">
     <div class="row">
       <div class="col-md-12 my-2">
@@ -43,12 +45,12 @@
   
         <div class="form-group col-md-4">
           <label for="inputEmail">メールアドレス</label>
-          <input type="email" class="form-control" id="inputEmail" placeholder="taro@gmail.com">
+          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="taro@gmail.com">
         </div>
   
         <div class="form-group col-md-4">
           <label for="inputPassword">パスワード</label>
-          <input type="password" class="form-control" id="inputPassword" placeholder="パスワードを入力">
+          <input type="password" class="form-control" id="inputPassword" name="password" placeholder="パスワードを入力">
         </div>
       </div>
 
@@ -56,6 +58,43 @@
 
     </form>
 
+  </section>
+
+  <section class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>現在登録中のユーザ</h5>
+
+        <table class="table">
+          <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>email</th>
+            <th>password</th>
+            <th>picture</th>
+            <th>created</th>
+            <th>modified</th>
+          </tr>
+          @foreach($members as $member)
+            <tr>
+              <td>{{ $member->id }}</td>
+              <td>{{ $member->name }}</td>
+              <td>{{ $member->email }}</td>
+              <td>
+                @php
+                  echo mb_substr($member->password,0,10). '...';
+                @endphp
+              </td>
+              <td>{{ $member->picture }}</td>
+              <td>{{ $member->created }}</td>
+              <td>{{ $member->modified }}</td>
+            </tr>
+          @endforeach
+
+        </table>
+
+      </div>
+    </div>
   </section>
 
 @endsection
