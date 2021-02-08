@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <form method="POST" action="/hello/check" class="my-3 pb-4">
+    <form method="POST" action="/hello/check" enctype="multipart/form-data" class="my-3 pb-4">
       @csrf
 
       <div class="form-row">
@@ -52,6 +52,12 @@
           <label for="inputPassword">パスワード</label>
           <input type="password" class="form-control" id="inputPassword" name="password" placeholder="パスワードを入力">
         </div>
+
+        <div class="form-group col-md-12">
+          <label for="inputPicture">画像ファイル</label>
+          <input type="file" class="form-control-file" id="inputPicture" name="picture">
+        </div>
+
       </div>
 
       <button type="submit" class="btn btn-sm btn-success float-right">登録</button>
@@ -92,6 +98,23 @@
           @endforeach
 
         </table>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          Member::find(1)->email <br> 
+          つまり主キーid=1のemailは, {{$myadmin_email}}
+        </p>
+
+        <p>
+          Member::where('email','php@gmail.com')->first() <br>
+          つまりemailがphp@gmail.comに該当する最初の１件を表示する<br>
+          id:{{$php->id}} / name:{{$php->name}} / picture:{{$php->picture}}
+        </p>
+
 
       </div>
     </div>
