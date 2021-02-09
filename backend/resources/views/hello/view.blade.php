@@ -26,6 +26,17 @@
   </section>
 
    --}}
+  <section class="container my-3">
+    <div class="row">
+      <div class="col-md-12">
+        <h6>
+          登録済みの方は
+          <a href="{{url('/hello/login')}}">ログイン画面</a> 
+          へ移遷してください
+        </h4>
+      </div>
+    </div>
+  </section>
 
   <section class="container my-3 border">
     <div class="row">

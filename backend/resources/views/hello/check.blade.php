@@ -1,5 +1,6 @@
 @extends('layouts.base')
 @section('title','入力確認')
+
 @section('main')
 
 <div class="container">
