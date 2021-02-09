@@ -19,3 +19,7 @@ Route::get('hello','HelloController@index');
 Route::get('hello/view','HelloController@view');
 Route::post('hello/check','HelloController@check');
 Route::post('hello/register','HelloController@register');
+Route::get('hello/login','HelloController@login');
+
+// MainController
+Route::post('main/thread','MainController@thread');

@@ -33,6 +33,11 @@ class HelloController extends Controller
 
     // Requestクラスができていて、その中にform内容が入っている
     public function check(Request $req) {
+
+      if (!$req->hasfile('picture')) {
+        return 'ファイルを指定してください';
+      }
+
       $file = $req->picture;
       $picName = $file->getClientOriginalName();
       $userData = [
@@ -56,16 +61,14 @@ class HelloController extends Controller
     }
     
     public function register(Request $req) {
-      $userData = [
-        'name' => $req->name,
-        'email' => $req->email,
-        // ハッシュ関数を取る
-        'password' => $req->password,
-        'picture' => $req->picture,
-      ];
-      
-      return view('hello/register',$userData);
+      $m = new Member();
+      // csrfのトークンで送られているinputは除去する
+      $m -> fill( $req->except('_token') )->save();
+      return view('hello/register');
+    }
 
+    public function login() {
+      return view('hello/login');
     }
 
 
