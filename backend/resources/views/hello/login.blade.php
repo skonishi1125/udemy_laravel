@@ -16,7 +16,7 @@
       <div class="form-row">
         <div class="form-group col-md-8">
           <label for="inputEmail">メールアドレス</label>
-          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="taro@gmail.com">
+          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="メールアドレスを入力" value="{{old('email','')}}">
         </div>
   
         <div class="form-group col-md-4">
@@ -28,6 +28,10 @@
       <button type="submit" class="btn btn-sm btn-primary float-right">ログイン</button>
 
     </form>
+
+    @if (Session::has('e_msg'))
+      <p style="color: red">{{session('e_msg')}}</p> 
+    @endif
 
 
 

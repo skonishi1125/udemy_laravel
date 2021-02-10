@@ -34,12 +34,28 @@ class HelloController extends Controller
     // Requestクラスができていて、その中にform内容が入っている
     public function check(Request $req) {
 
-      if (!$req->hasfile('picture')) {
-        return 'ファイルを指定してください';
-      }
+      $this->validate($req, Member::$rules);
+
+      // if (!$req->hasfile('picture')) {
+      //   return redirect('hello/view')
+      //   ->withInput()->with('e_msg','入力に不備があります。');
+      // }
 
       $file = $req->picture;
-      $picName = $file->getClientOriginalName();
+      if (isset($file)) {
+        $date = date('YmdHis');
+        $picName = $date . $file->getClientOriginalName();
+        // storage.app.filesに保存される
+        // $file->storeAs('files',$picName);
+        
+        // storage/appから、勝手に /public/images/画像が生成される
+        // $file->storeAs('./public/images',$picName);
+  
+        // 正しくpublic.imagesに保存されている
+        $file->storeAs('images',$picName,'public_uploads');
+      } else {
+        $picName = 'sample.png';
+      }
       $userData = [
         'name' => $req->name,
         'email' => $req->email,
@@ -47,15 +63,6 @@ class HelloController extends Controller
         'picture' => $picName,
       ];
 
-      // storage.app.filesに保存される
-      // $file->storeAs('files',$picName);
-      
-      // storage/appから、勝手に /public/images/画像が生成される
-      // $file->storeAs('./public/images',$picName);
-
-      // 正しくpublic.imagesに保存されている
-      $file->storeAs('images',$picName,'public_uploads');
-      
       return view('hello/check',$userData);
       
     }
