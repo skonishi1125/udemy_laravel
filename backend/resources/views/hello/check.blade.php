@@ -17,7 +17,8 @@
     <p>パスワード：{{$password}}</p> 
     <input type="hidden" name="password" value="{{$password}}">
     <p>アイコン画像：{{ $picture }}</p>
-    <img src="{{ asset('images/' . $picture) }}" alt="アイコン" width="100">
+    <img class="img-thumbnail" src="{{ asset('images/' . $picture) }}" alt="アイコン" width="100">
+    <input type="hidden" name="picture" value="{{ $picture }}">
 
     <a href="{{url('/hello/view')}}">前の画面に戻る</a>
     <button class="btn btn-sm btn-success" type="submit">登録する</button>

@@ -51,17 +51,18 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="inputName">なまえ</label>
-          <input type="text" class="form-control" id="inputName" name="name" placeholder="タロー">
+          <input type="text" class="form-control" id="inputName" name="name" placeholder="タロー" value="{{ old('name') }}">
         </div>
   
         <div class="form-group col-md-4">
           <label for="inputEmail">メールアドレス</label>
-          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="taro@gmail.com">
+          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="taro@gmail.com" value="{{ old('email') }}">
         </div>
   
         <div class="form-group col-md-4">
-          <label for="inputPassword">パスワード</label>
-          <input type="password" class="form-control" id="inputPassword" name="password" placeholder="パスワードを入力">
+          <label for="inputPassword">パスワード<span style="font-size: 12px;" class="text-muted">(4文字以上)</span></label>
+          <input type="password" class="form-control" id="inputPassword" name="password" placeholder="****">
+
         </div>
 
         <div class="form-group col-md-12">
@@ -74,6 +75,19 @@
       <button type="submit" class="btn btn-sm btn-success float-right">登録</button>
 
     </form>
+
+    @if (count($errors) > 0)
+      <ul>
+        @foreach ($errors->all() as $err)
+          <li class="text-danger">{{ $err }}</li>
+        @endforeach
+      </ul>
+        
+    @endif
+
+    @if (Session::has('e_msg'))
+      <p style="color: red">{{session('e_msg')}}</p> 
+    @endif
 
   </section>
 
