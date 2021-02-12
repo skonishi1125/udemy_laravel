@@ -1,31 +1,7 @@
 @extends('layouts.base')
 @section('title','topページ')
 @section('main')
-{{-- 
-  <section class="container my-3">
-    <div class="row">
-      <div class="col-md-6">
-        <button class="btn btn-primary testbtn">
-          {{ $msg }}
-        </button>
-      </div>
 
-      <div class="col-md-6">
-        <p>ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div col="col-md-12">
-        <a href="{{url('/hello/view')}}">トップに戻る</a>
-        <p>
-          numberは、{{$number}}です。stringは、{{$string}}です。
-        </p>
-      </div>
-    </div>
-  </section>
-
-   --}}
   <section class="container my-3">
     <div class="row">
       <div class="col-md-12">

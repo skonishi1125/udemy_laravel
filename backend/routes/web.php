@@ -23,3 +23,4 @@ Route::get('hello/login','HelloController@login');
 
 // MainController
 Route::post('main/thread','MainController@thread');
+Route::match(['get','post'],'main/createMessage','MainController@createMessage');

@@ -2,31 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Member;
 // DB::tableを使うための記述
-use Illuminate\Support\Facades\DB;
+use App\Member;
+use App\Post;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    //
+
     public function thread(Request $req) {
       // DBのデータを全て取得 3.3.4
       // $members_data = Member::all();
 
-      // emailがある && sha256(password)がある場合、indexに飛ばす
-      $email = $req->email;
-      $password = hash('sha256',$req->password);
+      // うまく取得できていない
+      // formの値がないとき（loginから来ていないとき)、sessionの値で対応したい
+      // 下のコードはダメみたい
+
+      // emailとPWのフォームが埋まっている場合
+      if ($req->has('email') && $req->has('password')) {
+        $email = $req->email;
+        $password = hash('sha256',$req->password);
+        // ログインした情報をセッションに保存する
+        $req->session()->put('email', $email);
+        $req->session()->put('password',$password);
+      } else {
+        // それ以外のページから飛んできた場合
+        $email = $req->session()->get('email');
+        $password = $req->session()->get('password');
+      }
 
       // $result = Member::where('email',$email)->where('password',$password);
-
-      // first(1つの値を返す命令)を書かないとうまく表示されない
+      // ↑ダメ first(1つの値を返す命令)を書かないとうまく表示されない
       // 書かないと複数帰ってくる可能性があるから、そのまま変数に入れられない？
       $result = Member::where('email',$email)->first();
-      $test = Member::all();
-      $test2 = DB::table('members')->where('email',$email)->first();
+      $test = Member::all(); 
 
+      // ログインしたメンバーの値取得
+      $test2 = DB::table('members')->where('email',$email)->first();
       $loginUser = Member::where('email',$email)->where('password',$password)->first();
 
       if (!isset($loginUser)) {
@@ -39,9 +53,17 @@ class MainController extends Controller
         'result' => $result,
         'test' => $test,
         'test2' => $test2,
+        'loginUser' => $loginUser,
       ];
 
       return view('main/thread',$data);
-
     }
+
+    public function createMessage(Request $req) {
+      $p = new Post();
+      // $reqで送られてきた値を変数に格納、DBに登録
+      $p->fill($req->except('_token'))->save();
+      return view('main/createMessage');
+    }
+
 }
