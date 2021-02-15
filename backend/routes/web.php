@@ -17,8 +17,22 @@ Route::get('/', function () {
 
 // Udemy
 Route::get('tests/test', 'TestController@index');
+Auth::routes();
+// REST
+// Route::resource('contacts', 'ContactFormController')->only([
+//   'index', 'show'
+// ]);
 
-
+// Route::get('contact/index' , 'ContactFormController@index');
+// contact/createなど、まとめてグループで書く
+// prefix => フォルダ名 , '認証機能(使うなら)'
+// ユーザー登録していない場合、弾かれるようになる よく使うらしい
+Route::group(['prefix' => 'contact','middleware' => 'auth'], function(){
+  Route::get('index' , 'ContactFormController@index')->name('contact.index');
+  Route::get('create' , 'ContactFormController@create')->name('contact.create');
+});
+// 名前を付けられる
+Route::get('/home', 'HomeController@index')->name('home');
 
 
 // かあすれ
@@ -33,6 +47,4 @@ Route::get('hello/login','HelloController@login');
 Route::post('main/thread','MainController@thread');
 Route::match(['get','post'],'main/createMessage','MainController@createMessage');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
