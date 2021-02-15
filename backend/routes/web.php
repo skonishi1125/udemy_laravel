@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Udemy
+Route::get('tests/test', 'TestController@index');
+
+
+
+
+// かあすれ
+
 Route::get('hello','HelloController@index');
 Route::get('hello/view','HelloController@view');
 Route::post('hello/check','HelloController@check');
