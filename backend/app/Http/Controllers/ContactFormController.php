@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\ContactForm;
+use App\Services\CheckFormData;
 // クエリビルダの使用
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreContactForm;
 
 class ContactFormController extends Controller
 {
@@ -15,19 +17,29 @@ class ContactFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // エロクワント ORマッパー
-        // $contacts = ContactForm::all();
-        
-        // クエリビルダで取得
-        $contacts = DB::table('contact_forms')
-        ->select('id','your_name','title','created_at')
-        ->orderBy('created_at','desc')
-        ->get();
-        
-        // dd($contacts);
+        $search = $request->input('search');
+        // 検索フォーム
+        $query = DB::table('contact_forms');
 
+        if ($search != null) {
+          // 全角スペースを半角で表示
+          $search_split = mb_convert_kana($search,'s');
+          // 空白で検索候補を区切る
+          $search_split2 = preg_split('/[\s]+/', $search_split, -1, PREG_SPLIT_NO_EMPTY);
+
+          // 単語を回す
+          foreach ($search_split2 as $value) 
+          {
+            $query->where('your_name','like','%'.$value.'%');
+          }
+        };
+
+        $query->select('id','your_name','title','created_at');
+        $query->orderBy('created_at','asc');
+        $contacts = $query->paginate(20);
+        
         return view('contact.index', compact('contacts'));
     }
 
@@ -48,7 +60,7 @@ class ContactFormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreContactForm $request)
     {
         // DBインスタンス化
         $contact = new ContactForm;
@@ -79,40 +91,44 @@ class ContactFormController extends Controller
     {
       $contact = ContactForm::find($id);
 
-      // gender,ageが数字で格納されているので加工
-      if ($contact->gender === 0)
-      {
-        $gender = '男性';
-      }
-      if ($contact->gender === 1)
-      {
-        $gender = '女性';
-      }
+      $gender = CheckFormData::checkGender($contact);
+      $age = CheckFormData::checkAge($contact);
 
-      if ($contact->age == 1)
-      {
-        $age = '~19歳';
-      }
-      if ($contact->age == 2)
-      {
-        $age = '20~29歳';
-      }
-      if ($contact->age == 3)
-      {
-        $age = '30~39歳';
-      }
-      if ($contact->age == 4)
-      {
-        $age = '40~49歳';
-      }
-      if ($contact->age == 5)
-      {
-        $age = '50~59歳';
-      }
-      if ($contact->age == 6)
-      {
-        $age = '60歳~';
-      }
+      // gender,ageが数字で格納されているので加工
+      // if ($contact->gender === 0)
+      // {
+      //   $gender = '男性';
+      // }
+      // if ($contact->gender === 1)
+      // {
+      //   $gender = '女性';
+      // }
+
+      // if ($contact->age == 1)
+      // {
+      //   $age = '~19歳';
+      // }
+      // if ($contact->age == 2)
+      // {
+      //   $age = '20~29歳';
+      // }
+      // if ($contact->age == 3)
+      // {
+      //   $age = '30~39歳';
+      // }
+      // if ($contact->age == 4)
+      // {
+      //   $age = '40~49歳';
+      // }
+      // if ($contact->age == 5)
+      // {
+      //   $age = '50~59歳';
+      // }
+      // if ($contact->age == 6)
+      // {
+      //   $age = '60歳~';
+      // }
+      // dd($gender,$age);
       
         return view('contact.show',
         compact('contact','gender','age'));
